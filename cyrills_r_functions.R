@@ -86,6 +86,47 @@ table_to_mean_and_quantiles = function(path, layer_name){
   return(mean_sd)
 }
 
+
+########### 2nd version of the same function ############
+table_to_mean_and_quantiles_B = function(path){
+  input = read_csv(path)
+  input_wo_first_row = input[-1,]
+  input_wo_first_row <- input_wo_first_row[!is.na(input_wo_first_row$shoreline),]
+  input_wo_first_row <- input_wo_first_row[!is.na(input_wo_first_row$sinuosity),]
+  input_wo_first_row <- input_wo_first_row[!is.na(input_wo_first_row$total_sinuosity),]
+  input_wo_first_row <- input_wo_first_row[!is.na(input_wo_first_row$width_variability),]
+  input_wo_first_row[is.na(input_wo_first_row)] <- 0
+  input_wo_first_row = filter(input_wo_first_row, sinuosity >= 1)
+  input_wo_first_row = filter(input_wo_first_row, total_sinuosity >= 1)
+  indicators = select(input_wo_first_row,'shoreline','sinuosity','total_sinuosity','number_of_nodes','width_variability')
+  mean_row = colMeans(indicators)
+  shoreline = (sapply(indicators,mean,na.rm=TRUE))[1]
+  sinuosity = (sapply(indicators,mean,na.rm=TRUE))[2]
+  total_sinuosity = (sapply(indicators,mean,na.rm=TRUE))[3]
+  number_of_nodes = (sapply(indicators,mean,na.rm=TRUE))[4]
+  width_variability = (sapply(indicators,mean,na.rm=TRUE))[5]
+  shoreline_10q=quantile(indicators$shoreline,c(0.05),na.rm = TRUE)
+  shoreline_90q=quantile(indicators$shoreline,c(0.95),na.rm = TRUE)
+  sinuosity_10q=quantile(indicators$sinuosity,c(0.05),na.rm = TRUE)
+  sinuosity_90q=quantile(indicators$sinuosity,c(0.95),na.rm = TRUE)
+  total_sinuosity_10q=quantile(indicators$total_sinuosity,c(0.05),na.rm = TRUE)
+  total_sinuosity_90q=quantile(indicators$total_sinuosity,c(0.95),na.rm = TRUE)
+  number_of_nodes_10q=quantile(indicators$number_of_nodes,c(0.05),na.rm = TRUE)
+  number_of_nodes_90q=quantile(indicators$number_of_nodes,c(0.95),na.rm = TRUE)
+  width_variability_10q=quantile(indicators$width_variability,c(0.05),na.rm = TRUE)
+  width_variability_90q=quantile(indicators$width_variability,c(0.95),na.rm = TRUE)
+  
+  # mean_row$shoreline_sd = sapply(indicators$shoreline,sd,na.rm=TRUE)
+  mean_sd = cbind(shoreline,sinuosity,total_sinuosity,number_of_nodes,width_variability,
+                  shoreline_10q,shoreline_90q,
+                  sinuosity_10q,sinuosity_90q,
+                  total_sinuosity_10q,total_sinuosity_90q,
+                  number_of_nodes_10q,number_of_nodes_90q,
+                  width_variability_10q,width_variability_90q)
+  #list=c(mean_row,input_wo_first_row)
+  return(mean_sd)
+}
+
 add_whiskers = function(means_table, size,originals){
   means_table$shoreline_minus5 = with(means_table, shoreline * (1-size))
   means_table$shoreline_plus5 = with(means_table, shoreline * (1+size))

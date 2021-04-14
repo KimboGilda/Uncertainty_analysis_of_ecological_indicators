@@ -48,7 +48,7 @@ width_exagg_B = function(whiskers_table,x_var, column){
     geom_hline(yintercept = 1.00, linetype = "dotted", alpha = 0.5) + geom_hline(yintercept = 0.95, linetype = "dashed", alpha = 0.5) +
     geom_hline(yintercept = 1.05, linetype = "dashed", alpha = 0.5) + geom_hline(yintercept = 1.10, linetype = "twodash", alpha = 0.5) +
     geom_hline(yintercept = 0.90, linetype = "twodash", alpha = 0.5) + 
-    theme_classic(base_size = 12, base_family = "")+ ylab("Number of nodes") +
+    theme_classic(base_size = 12, base_family = "")+ ylab("Number of Nodes") +
     theme(axis.title.x=element_blank(), axis.text.y = element_text(size = 7, face = "bold"),
           axis.text.x = element_text(size = 7, face = "bold"), legend.position = 'none')
   
@@ -60,7 +60,7 @@ width_exagg_B = function(whiskers_table,x_var, column){
     geom_hline(yintercept = 1.00, linetype = "dotted", alpha = 0.5) + geom_hline(yintercept = 0.95, linetype = "dashed", alpha = 0.5) +
     geom_hline(yintercept = 1.05, linetype = "dashed", alpha = 0.5) + geom_hline(yintercept = 1.10, linetype = "twodash", alpha = 0.5) +
     geom_hline(yintercept = 0.90, linetype = "twodash", alpha = 0.5) + 
-    theme_classic(base_size = 12, base_family = "")+ ylab("width variability") +
+    theme_classic(base_size = 12, base_family = "")+ ylab("Width Variability") +
     theme(axis.text.y = element_text(size = 7, face = "bold"),
           axis.text.x = element_text(size = 7, face = "bold"), legend.position = 'none')
   
@@ -72,10 +72,11 @@ width_exagg_B = function(whiskers_table,x_var, column){
 
 ################# quantiles_plot ###########3
 quantiles_plot_B = function(whiskers_table,x_var,column){
-  options(repr.plot.width = 1, repr.plot.height = 1)
   
-  shoreline_plot_5 = ggplot() + geom_point(data = whiskers_table,aes(x = x_var,y = shoreline_diff, 
-                                                                     shape = river)) +
+  shoreline_plot_5 = ggplot() + geom_errorbar(aes(x = rivers_whiskers$sd, ymax = rivers_whiskers$shoreline_90q_diff, ymin = rivers_whiskers$shoreline_10q_diff
+                                                  , width = 0.1, color = rivers_whiskers$river)) +
+    geom_point(data = rivers_whiskers,aes(x = rivers_whiskers$sd,y = shoreline_diff, 
+                                          shape = river)) +
     guides(color=FALSE)+
     labs(x='sd') + 
     geom_hline(yintercept = 1.00, linetype = "dotted", alpha = 0.5) + geom_hline(yintercept = 0.95, linetype = "dashed", alpha = 0.5) +
@@ -87,8 +88,10 @@ quantiles_plot_B = function(whiskers_table,x_var,column){
   
   
   # sinuosity
-  sinuosity_plot_5 = ggplot() + geom_point(data = whiskers_table,aes(x = x_var,y = sinuosity_diff, 
-                                                                     shape = river)) +
+  sinuosity_plot_5 = ggplot() + 
+    geom_errorbar(aes(x = x_var, ymax = whiskers_table$sinuosity_90q_diff, ymin = whiskers_table$sinuosity_10q_diff,
+                      width = 0.1, color = rivers_whiskers$river)) + 
+    geom_point(data = whiskers_table,aes(x = x_var,y = sinuosity_diff)) +
     guides(color=FALSE)+
     labs(x='sd') + 
     geom_hline(yintercept = 1.00, linetype = "dotted", alpha = 0.5) + geom_hline(yintercept = 0.95, linetype = "dashed", alpha = 0.5) +
@@ -99,8 +102,10 @@ quantiles_plot_B = function(whiskers_table,x_var,column){
           axis.text.x = element_text(size = 7, face = "bold"), legend.position = 'none')
   
   # total sinuosity
-  total_sinuosity_plot_5 = ggplot() + geom_point(data = whiskers_table,aes(x = x_var,y = total_sinuosity_diff, 
-                                                                           shape = river)) +
+  total_sinuosity_plot_5 = ggplot() + 
+    geom_errorbar(aes(x = x_var, ymax = whiskers_table$total_sinuosity_90q_diff, ymin = whiskers_table$total_sinuosity_10q_diff,
+                      width = 0.1, color = rivers_whiskers$river)) + 
+    geom_point(data = whiskers_table,aes(x = x_var,y = total_sinuosity_diff,shape = river)) +
     guides(color=FALSE)+
     labs(x='sd') + 
     geom_hline(yintercept = 1.00, linetype = "dotted", alpha = 0.5) + geom_hline(yintercept = 0.95, linetype = "dashed", alpha = 0.5) +
@@ -111,7 +116,10 @@ quantiles_plot_B = function(whiskers_table,x_var,column){
           axis.text.x = element_text(size = 7, face = "bold"), legend.position = 'none')
   
   # number of nodes
-  number_of_nodes_plot_5 = ggplot() + geom_point(data = whiskers_table,aes(x = x_var,y = number_of_nodes_diff, 
+  number_of_nodes_plot_5 = ggplot() + 
+    geom_errorbar(aes(x = x_var, ymax = whiskers_table$number_of_nodes_90q_diff, ymin = whiskers_table$number_of_nodes_10q_diff,
+                      width = 0.1, color = rivers_whiskers$river)) + 
+    geom_point(data = whiskers_table,aes(x = x_var,y = number_of_nodes_diff, 
                                                                            shape = river)) +
     guides(color=FALSE)+
     labs(x='sd') + 
@@ -123,7 +131,10 @@ quantiles_plot_B = function(whiskers_table,x_var,column){
           axis.text.x = element_text(size = 7, face = "bold"), legend.position = 'none')
   
   # width variability
-  width_variability_plot_5 = ggplot() + geom_point(data = whiskers_table,aes(x = x_var,y = width_variability_diff, 
+  width_variability_plot_5 = ggplot() + 
+    geom_errorbar(aes(x = x_var, ymax = whiskers_table$width_variability_90q_diff, ymin = whiskers_table$width_variability_10q_diff,
+                      width = 0.1, color = rivers_whiskers$river)) +
+    geom_point(data = whiskers_table,aes(x = x_var,y = width_variability_diff, 
                                                                              shape = river)) +
     guides(color=FALSE)+
     labs(x='sd') + 
@@ -234,7 +245,17 @@ find_diff <- function(input) {
       sinuosity_diff = ((sinuosity - input[1,3])/input[1,3]) + 1,
       total_sinuosity_diff = ((total_sinuosity - input[1,4])/input[1,4]) + 1,
       number_of_nodes_diff = ((number_of_nodes - input[1,5])/input[1,5]) + 1,
-      width_variability_diff = ((width_variability - input[1,6])/input[1,6]) + 1
+      width_variability_diff = ((width_variability - input[1,6])/input[1,6]) + 1,
+      shoreline_10q_diff = ((shoreline_10q - input[1,7])/input[1,7]) + 1, 
+      shoreline_90q_diff = ((shoreline_90q - input[1,8])/input[1,8]) + 1,
+      sinuosity_10q_diff = ((sinuosity_10q - input[1,9])/input[1,9]) + 1,
+      sinuosity_90q_diff = ((sinuosity_90q - input[1,10])/input[1,10]) + 1,
+      total_sinuosity_10q_diff = ((total_sinuosity_10q - input[1,11])/input[1,11]) + 1,
+      total_sinuosity_90q_diff = ((total_sinuosity_90q - input[1,12])/input[1,12]) + 1,
+      number_of_nodes_10q_diff = ((number_of_nodes_10q - input[1,13])/input[1,13]) + 1,
+      number_of_nodes_90q_diff = ((number_of_nodes_90q - input[1,14])/input[1,14]) + 1,
+      width_variability_10q_diff = ((width_variability_10q - input[1,15])/input[1,15]) + 1,
+      width_variability_90q_diff = ((width_variability_90q - input[1,16])/input[1,16]) + 1
       )
   return(input)
 }

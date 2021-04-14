@@ -17,13 +17,13 @@ library(ggplot2)
 plot1 <- annotate_figure(width_extension_whisker_plot,
                 top = text_grob("Exaggeration error", face = "bold", size = 13))
 
-plot2 <- annotate_figure(georeferencing_whisker_plot,
+plot2 <- annotate_figure(manual_all,
+                         top = text_grob("Manual digitizing error", face = "bold", size = 13))
+
+plot3 <- annotate_figure(georef_all,
                          top = text_grob("Georeferencing error", face = "bold", size = 13))
 
-plot3 <- annotate_figure(man_dig_whisker_plot,
-                         top = text_grob("Manual digitizing error", face = "bold", size = 13))
-  
-  
-allPlots <- ggarrange(plot1,plot2, plot3, ncol = 3, common.legend = TRUE)
+
+allPlots <- ggarrange(plot1,plot2,plot3, ncol = 3, common.legend = TRUE)
 
 

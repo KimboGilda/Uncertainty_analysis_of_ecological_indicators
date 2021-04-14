@@ -95,16 +95,6 @@ width_extension_whisker_plot <- width_exagg_B(width_extension_whiskers, width_ex
 #
 
 
-# width_variability_plot_5 = ggplot() +
-#   geom_point(data = width_extension_whiskers,aes(x = minimum_width,y = width_variability_diff,
-#   shape = river)) +
-#   guides(color=FALSE)+
-#   labs(x='minimum width (m)') +
-#   geom_hline(yintercept = 1.00, linetype = "dotted") + geom_hline(yintercept = 0.95, linetype = "dashed") +
-#   geom_hline(yintercept = 1.05, linetype = "dashed") + geom_hline(yintercept = 1.10, linetype = "twodash") +
-#   geom_hline(yintercept = 0.90, linetype = "twodash")  + ylim(0,2) +
-#   theme_classic(base_size = 12, base_family = "")+ ylab("width variability") + theme(legend.position = 'none')
-
 
 
 
